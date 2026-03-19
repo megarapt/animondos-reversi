@@ -29,7 +29,7 @@ This project is released under the **MIT License**.
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YOUR_USER/animondos-reversi.git](https://github.com/YOUR_USER/animondos-reversi.git)
+   git clone https://github.com/megarapt/animondos-reversi.git
    
 2. **Install dependencies:**
    ```bash
