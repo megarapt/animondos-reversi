@@ -1,0 +1,305 @@
+{
+  "difficulties": {
+    "1": {
+      "name": "diff_beginner",
+      "cssClass": "beginner",
+      "depth": 2,
+      "errorRate": 0.8,
+      "heuristic": [
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1],
+        [ 1,  1,  1,  1,  1,  1,  1,  1]
+      ]
+    },
+    "2": {
+      "name": "diff_apprentice",
+      "cssClass": "apprentice",
+      "depth": 3,
+      "errorRate": 0.5,
+      "heuristic": [
+        [ 20, -5,  5,  2,  2,  5, -5, 20],
+        [ -5, -5,  1,  1,  1,  1, -5, -5],
+        [  5,  1,  1,  1,  1,  1,  1,  5],
+        [  2,  1,  1,  1,  1,  1,  1,  2],
+        [  2,  1,  1,  1,  1,  1,  1,  2],
+        [  5,  1,  1,  1,  1,  1,  1,  5],
+        [ -5, -5,  1,  1,  1,  1, -5, -5],
+        [ 20, -5,  5,  2,  2,  5, -5, 20]
+      ]
+    },
+    "3": {
+      "name": "diff_challenger",
+      "cssClass": "challenger",
+      "depth": 4,
+      "errorRate": 0.3,
+      "heuristic": [
+        [ 50, -20,  10,   5,   5,  10, -20,  50],
+        [-20, -30,  -2,  -2,  -2,  -2, -30, -20],
+        [ 10,  -2,   1,   1,   1,   1,  -2,  10],
+        [  5,  -2,   1,   1,   1,   1,  -2,   5],
+        [  5,  -2,   1,   1,   1,   1,  -2,   5],
+        [ 10,  -2,   1,   1,   1,   1,  -2,  10],
+        [-20, -30,  -2,  -2,  -2,  -2, -30, -20],
+        [ 50, -20,  10,   5,   5,  10, -20,  50]
+      ]
+    },
+    "4": {
+      "name": "diff_veteran",
+      "cssClass": "veteran",
+      "depth": 4,
+      "errorRate": 0.1,
+      "heuristic": [
+        [ 80, -30,  15,   5,   5,  15, -30,  80],
+        [-30, -40,  -5,  -5,  -5,  -5, -40, -30],
+        [ 15,  -5,   2,   1,   1,   2,  -5,  15],
+        [  5,  -5,   1,   1,   1,   1,  -5,   5],
+        [  5,  -5,   1,   1,   1,   1,  -5,   5],
+        [ 15,  -5,   2,   1,   1,   2,  -5,  15],
+        [-30, -40,  -5,  -5,  -5,  -5, -40, -30],
+        [ 80, -30,  15,   5,   5,  15, -30,  80]
+      ]
+    },
+    "5": {
+      "name": "diff_expert",
+      "cssClass": "expert",
+      "depth": 5,
+      "errorRate": 0.0,
+      "heuristic": [
+        [ 100, -50,  10,   5,   5,  10, -50, 100],
+        [ -50, -50,  -2,  -2,  -2,  -2, -50, -50],
+        [  10,  -2,   1,   1,   1,   1,  -2,  10],
+        [   5,  -2,   1,   1,   1,   1,  -2,   5],
+        [   5,  -2,   1,   1,   1,   1,  -2,   5],
+        [  10,  -2,   1,   1,   1,   1,  -2,  10],
+        [ -50, -50,  -2,  -2,  -2,  -2, -50, -50],
+        [ 100, -50,  10,   5,   5,  10, -50, 100]
+      ]
+    },
+    "6": {
+      "name": "diff_master",
+      "cssClass": "master",
+      "depth": 6,
+      "errorRate": 0.0,
+      "heuristic": [
+        [ 250, -100,  20,  10,  10,  20, -100, 250],
+        [-100, -150,  -5,  -5,  -5,  -5, -150, -100],
+        [  20,   -5,   2,   2,   2,   2,   -5,  20],
+        [  10,   -5,   2,   4,   4,   2,   -5,  10],
+        [  10,   -5,   2,   4,   4,   2,   -5,  10],
+        [  20,   -5,   2,   2,   2,   2,   -5,  20],
+        [-100, -150,  -5,  -5,  -5,  -5, -150, -100],
+        [ 250, -100,  20,  10,  10,  20, -100, 250]
+      ]
+    },
+    "7": {
+      "name": "diff_legend",
+      "cssClass": "legend",
+      "depth": 7,
+      "errorRate": 0.0,
+      "heuristic": [
+        [ 500, -250,  30,  10,  10,  30, -250, 500],
+        [-250, -350, -10, -10, -10, -10, -350, -250],
+        [  30,  -10,   2,   2,   2,   2,  -10,  30],
+        [  10,  -10,   2,  16,  16,   2,  -10,  10],
+        [  10,  -10,   2,  16,  16,   2,  -10,  10],
+        [  30,  -10,   2,   2,   2,   2,  -10,  30],
+        [-250, -350, -10, -10, -10, -10, -350, -250],
+        [ 500, -250,  30,  10,  10,  30, -250, 500]
+      ]
+    }
+  },
+  "opponents": [
+    {
+      "id": "giovanna",
+      "name": "Giovanna",
+      "portrait": "img/giovanna-face.webp",
+      "difficultyLevel": 1,
+      "playStyle": "positional",
+      "assets": [
+        "img/giovanna-idle.webp",
+        "img/giovanna-thinking.webp",
+        "img/giovanna-throw.webp",
+        "img/giovanna-bad-player-move.webp",
+        "img/giovanna-good-player-move.webp",
+        "img/giovanna-lost-corner.webp",
+        "img/giovanna-lost.webp",
+        "img/giovanna-won.webp"
+      ]
+    },
+	{
+      "id": "ethan",
+      "name": "Ethan",
+      "portrait": "img/ethan-face.webp",
+      "difficultyLevel": 1,
+      "playStyle": "greedy",
+      "assets": [
+        "img/ethan-idle.webp",
+        "img/ethan-thinking.webp",
+        "img/ethan-throw.webp",
+        "img/ethan-bad-player-move.webp",
+        "img/ethan-good-player-move.webp",
+        "img/ethan-lost-corner.webp",
+        "img/ethan-lost.webp",
+        "img/ethan-won.webp"
+      ]
+    },
+    {
+      "id": "francisco",
+      "name": "Francisco",
+      "portrait": "img/francisco-face.webp",
+      "difficultyLevel": 2,
+      "playStyle": "greedy",
+      "assets": [
+        "img/francisco-idle.webp",
+        "img/francisco-thinking.webp",
+        "img/francisco-throw.webp",
+        "img/francisco-bad-player-move.webp",
+        "img/francisco-good-player-move.webp",
+        "img/francisco-lost-corner.webp",
+        "img/francisco-lost.webp",
+        "img/francisco-won.webp"
+      ]
+    },
+    {
+      "id": "madison",
+      "name": "Madison",
+      "portrait": "img/madison-face.webp",
+      "difficultyLevel": 3,
+      "playStyle": "evasive",
+      "assets": [
+        "img/madison-idle.webp",
+        "img/madison-thinking.webp",
+        "img/madison-throw.webp",
+        "img/madison-bad-player-move.webp",
+        "img/madison-good-player-move.webp",
+        "img/madison-lost-corner.webp",
+        "img/madison-lost.webp",
+        "img/madison-won.webp"
+      ]
+    },
+    {
+      "id": "francois",
+      "name": "Francois",
+      "portrait": "img/francois-face.webp",
+      "difficultyLevel": 4,
+      "playStyle": "frontier",
+      "assets": [
+        "img/francois-idle.webp",
+        "img/francois-thinking.webp",
+        "img/francois-throw.webp",
+        "img/francois-bad-player-move.webp",
+        "img/francois-good-player-move.webp",
+        "img/francois-lost-corner.webp",
+        "img/francois-lost.webp",
+        "img/francois-won.webp"
+      ]
+    },
+    {
+      "id": "shinbi",
+      "name": "Shinbi",
+      "portrait": "img/shinbi-face.webp",
+      "difficultyLevel": 5,
+      "playStyle": "mobility",
+      "assets": [
+        "img/shinbi-idle.webp",
+        "img/shinbi-thinking.webp",
+        "img/shinbi-throw.webp",
+        "img/shinbi-bad-player-move.webp",
+        "img/shinbi-good-player-move.webp",
+        "img/shinbi-lost-corner.webp",
+        "img/shinbi-lost.webp",
+        "img/shinbi-won.webp"
+      ]
+    },	
+    {
+      "id": "emma",
+      "name": "Emma",
+      "portrait": "img/emma-face.webp",
+      "difficultyLevel": 5,
+      "playStyle": "positional",
+      "assets": [
+        "img/emma-idle.webp",
+        "img/emma-thinking.webp",
+        "img/emma-throw.webp",
+        "img/emma-bad-player-move.webp",
+        "img/emma-good-player-move.webp",
+        "img/emma-lost-corner.webp",
+        "img/emma-lost.webp",
+        "img/emma-won.webp"
+      ]
+    },
+    {
+      "id": "yui",
+      "name": "Yui",
+      "portrait": "img/yui-face.webp",
+      "difficultyLevel": 6,
+      "playStyle": "mobility",
+      "assets": [
+        "img/yui-idle.webp",
+        "img/yui-thinking.webp",
+        "img/yui-throw.webp",
+        "img/yui-bad-player-move.webp",
+        "img/yui-good-player-move.webp",
+        "img/yui-lost-corner.webp",
+        "img/yui-lost.webp",
+        "img/yui-won.webp"
+      ]
+    },
+    {
+      "id": "elizabeth",
+      "name": "Elizabeth",
+      "portrait": "img/elizabeth-face.webp",
+      "difficultyLevel": 6,
+      "playStyle": "evasive",
+      "assets": [
+        "img/elizabeth-idle.webp",
+        "img/elizabeth-thinking.webp",
+        "img/elizabeth-throw.webp",
+        "img/elizabeth-bad-player-move.webp",
+        "img/elizabeth-good-player-move.webp",
+        "img/elizabeth-lost-corner.webp",
+        "img/elizabeth-lost.webp",
+        "img/elizabeth-won.webp"
+      ]
+    },
+    {
+      "id": "chon",
+      "name": "Chon",
+      "portrait": "img/chon-face.webp",
+      "difficultyLevel": 7,
+      "playStyle": "positional",
+      "assets": [
+        "img/chon-idle.webp",
+        "img/chon-thinking.webp",
+        "img/chon-throw.webp",
+        "img/chon-bad-player-move.webp",
+        "img/chon-good-player-move.webp",
+        "img/chon-lost-corner.webp",
+        "img/chon-lost.webp",
+        "img/chon-won.webp"
+      ]
+    },
+    {
+      "id": "aoyama",
+      "name": "Aoyama",
+      "portrait": "img/aoyama-face.webp",
+      "difficultyLevel": 7,
+      "playStyle": "dynamic",
+      "assets": [
+        "img/aoyama-idle.webp",
+        "img/aoyama-thinking.webp",
+        "img/aoyama-throw.webp",
+        "img/aoyama-bad-player-move.webp",
+        "img/aoyama-good-player-move.webp",
+        "img/aoyama-lost-corner.webp",
+        "img/aoyama-lost.webp",
+        "img/aoyama-won.webp"
+      ]
+    }
+  ]
+}
