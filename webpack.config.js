@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
-//const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require("terser-webpack-plugin");
 const sharp = require('sharp');
 const pkg = require('./package.json');
 
@@ -28,8 +28,7 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: [
-                    //MiniCssExtractPlugin.loader,
-                    'style-loader', // <--- VOLVEMOS A STYLE-LOADER
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
@@ -59,8 +58,15 @@ module.exports = {
         ],
     },
     optimization: {
+        minimize: true,
         minimizer: [
-            `...`, 
+            new TerserPlugin({
+                terserOptions: {
+                    compress: {
+                        drop_console: true, // Borra los console.log en producción
+                    },
+                },
+            }),
             new ImageMinimizerPlugin({
                 minimizer: {
                     implementation: ImageMinimizerPlugin.sharpMinify,
@@ -105,9 +111,6 @@ module.exports = {
                 collapseWhitespace: true
             }
         }),
-        /*new MiniCssExtractPlugin({
-            filename: 'css/style.[contenthash].css' 
-        }),*/
         new CopyWebpackPlugin({
             patterns: [
                 { from: "src/favicon/", to: "" },

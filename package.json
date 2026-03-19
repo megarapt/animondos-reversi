@@ -1,15 +1,21 @@
 {
   "name": "animondos-reversi",
   "version": "1.0.6",
-  "main": "index.js",
+  "description": "High-performance PWA Reversi engine with offline-first architecture, Web Worker AI, and automated asset optimization. Celebrating 15 years of Animondos and 23 years of Raptware.",
+  "main": "src/js/index.js",
   "scripts": {
+    "start": "webpack serve --mode development --open",
     "build": "webpack --mode production",
-    "dev": "webpack --mode development --watch"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "reversi",
+    "animondos",
+    "raptware",
+    "game-engine"
+  ],
+  "author": "Roberto Pavón",
+  "license": "MIT",
   "devDependencies": {
     "copy-webpack-plugin": "^14.0.0",
     "css-loader": "^7.1.4",
@@ -19,6 +25,7 @@
     "style-loader": "^4.0.0",
     "webpack": "^5.105.4",
     "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.3",
     "workbox-webpack-plugin": "^7.0.0"
   },
   "dependencies": {
