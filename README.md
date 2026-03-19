@@ -1,6 +1,6 @@
 # Animondos' Reversi - 15th Anniversary Edition 🎊
 
-A high-performance, web-based Reversi (Othello) engine developed to celebrate the **15th Anniversary of the Animondos comic** and **23 years of Raptware Studio**. This project is a technical showcase of modern web optimization, multithreaded AI logic, and a responsive 2.5D CSS rendering system.
+A high-performance, web-based Reversi engine developed to celebrate the **15th Anniversary of the Animondos comic** and **23 years of Raptware Studio**. This project is a technical showcase of modern web optimization, multithreaded AI logic, and a responsive 2.5D CSS rendering system.
 
 ## 🚀 Technical Highlights
 
