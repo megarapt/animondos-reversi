@@ -23,6 +23,12 @@ module.exports = {
         // Standard path for assets called via JS/CSS
         assetModuleFilename: 'assets/[name][ext]' 
     },
+    resolve: {
+        alias: {
+            // Esto permite que el CSS use la ruta relativa correctamente
+            '/etc/hd-img': path.resolve(__dirname, 'etc/hd-img'),
+        },
+    },
     module: {
         rules: [
             {

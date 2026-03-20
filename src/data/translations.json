@@ -24,9 +24,12 @@
     "diff_apprentice": "Aprendiz",
     "diff_challenger": "Retador",
     "diff_veteran": "Veterano",
+    "diff_elite": "Élite",
     "diff_expert": "Experto",
     "diff_master": "Maestro",
-    "diff_legend": "Leyenda"
+    "diff_legend": "Leyenda",
+    "donate_short": "❤️",
+    "donate_full": "❤️ Dona para apoyarnos a seguir haciendo juegos gratis"
   },
   "en": {
     "loading": "LOADING...",
@@ -53,8 +56,11 @@
     "diff_apprentice": "Apprentice",
     "diff_challenger": "Challenger",
     "diff_veteran": "Veteran",
+    "diff_elite": "Elite",
     "diff_expert": "Expert",
     "diff_master": "Master",
-    "diff_legend": "Legend"
+    "diff_legend": "Legend",
+    "donate_short": "❤️",
+    "donate_full": "❤️Donate to help us keep making free games"
   }
 }

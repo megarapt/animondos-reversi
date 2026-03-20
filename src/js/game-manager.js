@@ -109,6 +109,25 @@ const resizer = new ResizeObserver(entries => {
 
 gameScreens.forEach(screen => resizer.observe(screen));
 
+function updateDonationLink() {
+    const donationLinks = {
+        en: "https://www.paypal.com/donate/?hosted_button_id=DKX4NRA378Y4W",
+        es: "https://www.paypal.com/donate/?hosted_button_id=GKMVWT9DL9SUS"
+    };
+    const linkEl = document.getElementById('donation-link');
+    if (linkEl) {
+        // Usamos el objeto de configuración, no el de traducción
+        linkEl.href = donationLinks[i18n.currentLang] || donationLinks.en;
+    }
+}
+
+function showDonationButton(isVisible) {
+    const btn = document.getElementById('donation-corner');
+    if (btn) {
+        btn.style.display = isVisible ? 'block' : 'none';
+    }
+}
+
 export const GameManager = {
     version: __APP_VERSION__, // Injected via Webpack
     currentState: null,
@@ -141,6 +160,8 @@ export const GameManager = {
             });
         }
 
+        updateDonationLink();
+
         // Initialize engine at BOOT state
         this.changeState(GAME_STATES.BOOT);
     },
@@ -152,6 +173,9 @@ export const GameManager = {
         document.querySelectorAll('.game-screen').forEach(screen => {
             screen.style.display = 'none';
         });
+
+        // 1.5 Hide donation ribbon
+        showDonationButton(false);
 
         // 2. State machine entry logic
         switch(newState) {
@@ -237,6 +261,9 @@ export const GameManager = {
                 setTimeout(updateScrollIndicators, 50);
                 
                 this.cleanupPreviousOpponent();
+
+                // show donation ribbon on main menu
+                showDonationButton(true);
                 break;
 
             case GAME_STATES.CHARACTER_PRELOADER:

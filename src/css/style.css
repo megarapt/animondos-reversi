@@ -462,6 +462,7 @@ body {
 .char-difficulty.apprentice { color: #4caf50; } /* Green */
 .char-difficulty.challenger { color: #2196f3; } /* Blue */
 .char-difficulty.veteran    { color: #9c27b0; } /* Purple */
+.char-difficulty.elite      { color: #e91e63; } /* Pink / Raspberry */
 .char-difficulty.expert     { color: #ff9800; } /* Orange */
 .char-difficulty.master     { color: #f44336; } /* Red */
 
@@ -984,4 +985,64 @@ body {
 @keyframes hintPulse {
     0% { transform: translateZ(2px) scale(0.8); opacity: 0.3; box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
     100% { transform: translateZ(2px) scale(1.2); opacity: 0.8; box-shadow: 0 0 15px rgba(255, 215, 0, 1); }
+}
+
+.donation-ribbon {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    cursor: pointer;
+    font-family: 'Arial', sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* El triángulo de la esquina */
+.ribbon-triangle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: calc(60px * var(--game-scale, 1)) calc(60px * var(--game-scale, 1)) 0 0;
+    border-color: #ff9800 transparent transparent transparent; /* Color Naranja Raptware */
+    transition: border-color 0.3s ease;
+}
+
+/* El texto "Dona" dentro del triángulo */
+.ribbon-text-short {
+    position: absolute;
+    top: calc(-52px * var(--game-scale, 1));
+    left: calc(5px * var(--game-scale, 1));
+    color: white;
+    font-size: calc(12px * var(--game-scale, 1));
+    font-weight: bold;
+    transform: rotate(-45deg);
+    text-transform: uppercase;
+}
+
+/* El mensaje oculto que se desliza */
+.ribbon-message {
+    position: absolute;
+    top: calc(10px * var(--game-scale, 1));
+    left: calc(-300px * var(--game-scale, 1)); /* Escondido a la izquierda */
+    background: rgba(255, 152, 0, 0.95);
+    color: white;
+    padding: calc(8px * var(--game-scale, 1)) calc(15px * var(--game-scale, 1));
+    border-radius: 0 calc(20px * var(--game-scale, 1)) calc(20px * var(--game-scale, 1)) 0;
+    font-size: calc(11px * var(--game-scale, 1));
+    white-space: nowrap;
+    transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+}
+
+/* Efecto Hover (Mouse) y Active (Touch) */
+.donation-ribbon:hover .ribbon-message,
+.donation-ribbon:active .ribbon-message {
+    left: 0;
+}
+
+.donation-ribbon:hover .ribbon-triangle {
+    border-top-color: #e68a00; /* Un tono más oscuro al tocar */
 }

@@ -119,7 +119,16 @@ function evaluateBoard(board, player, overrideStyle = null) {
         return score;
     }
 
-    // 5. Dynamic: Switches style based on the game phase (Early, Mid, Late)
+    // 5. Strategic: A balanced blend of Board Control and Options
+    if (style === "strategic") {
+        const mobilityScore = 10 * (getAllValidMoves(board, player).length - getAllValidMoves(board, opponent).length);
+        const positionalScore = evaluateBoard(board, player, "positional");
+        
+        // 50% Movilidad, 50% Posición
+        return (0.5 * mobilityScore) + (0.5 * positionalScore);
+    }
+
+    // 6. Dynamic: Switches style based on the game phase (Early, Mid, Late)
     if (style === "dynamic") {
         let emptyCount = getEmptyCount(board);
         if (emptyCount > 40) return evaluateBoard(board, player, "evasive");  // Early game
