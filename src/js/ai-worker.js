@@ -12,6 +12,7 @@ const BOARD_SIZE = 8;
 // Worker state variables
 let currentHeuristic = [];
 let currentStyle = "positional";
+let turnCounter = 0;
 
 /**
  * CORE ENGINE: MINIMAX ALGORITHM WITH ALPHA-BETA PRUNING
@@ -226,7 +227,7 @@ function simulateMove(board, move, flips, player) {
 
 // --- MAIN THREAD COMMUNICATION ---
 self.onmessage = function(e) {
-    const { board, player, depth, heuristic, errorRate, style } = e.data;
+    const { board, player, depth, heuristic, errorRate, style, patience } = e.data;
     
     // Debugging logs
     if (!heuristic || heuristic.length === 0) {
@@ -239,14 +240,16 @@ self.onmessage = function(e) {
 
     const validMoves = getAllValidMoves(board, player);
 
-    // Human Error Rate Simulation
-    if (Math.random() < errorRate) {
+    // Human Error Rate Simulation from level || Psychological Patience Factor Simulation
+    if (Math.random() < errorRate || (patience && turnCounter >= patience && Math.random() < 0.1)) {
         const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+        turnCounter=0; // Reset patience counter after making a random move
         self.postMessage(randomMove.move);
         return;
     }
 
     // Standard Minimax calculation
     const bestMoveData = minimax(board, depth, -Infinity, Infinity, true, player);
+    turnCounter++;
     self.postMessage(bestMoveData.move);
 };

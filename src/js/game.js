@@ -5,13 +5,15 @@ import { AudioManager } from './audio-manager.js';
 // --- GLOBAL CONSTANTS & STATE ---
 const BOARD_SIZE = 8, EMPTY = 0, BLACK = 1, WHITE = 2;
 let board = [], pieceElements = [], currentPlayer = BLACK, isAiTurn = false;
+let isInputDisabled = false;
 
 let currentAiDepth = 2;
 let currentAiHeuristic = [];
 let currentAiErrorRate = 0;
+let currentAiPatience = null; // New variable for psychological patience factor in AI behavior
 let currentOpponentId = 'giovanna';
 let currentOpponentName = 'Giovanna';
-let currentAiStyle = 'positional'; 
+let currentAiStyle = 'positional';
 let onGameExit = null;
 
 const boardEl = document.getElementById('board');
@@ -20,7 +22,9 @@ const statusEl = document.getElementById('status');
 let aiWorker = null;
 let currentMatchId = 0;
 
-let isConfettiActive = false; // <-- Nueva variable
+let isConfettiActive = false;
+
+let activeTimeouts = new Set();
 
 /**
  * Spawns a new Web Worker for AI calculations.
@@ -28,6 +32,7 @@ let isConfettiActive = false; // <-- Nueva variable
  */
 function spawnWorker() {
     if (aiWorker) {
+        aiWorker.onmessage = null;
         aiWorker.terminate();
     }
     
@@ -51,10 +56,11 @@ function spawnWorker() {
 /**
  * Initializes a new match with specific AI personality and difficulty.
  */
-export function initGame(depth, heuristic, errorRate, style, opponentId, opponentName, exitCallback) {
+export function initGame(depth, heuristic, errorRate, style, opponentId, opponentName, opponentPatience, exitCallback) {
     currentAiDepth = depth;
     currentAiHeuristic = heuristic;
     currentAiErrorRate = errorRate;
+    currentAiPatience = opponentPatience;
     currentAiStyle = style;
     currentOpponentId = opponentId;
     currentOpponentName = opponentName;
@@ -69,7 +75,8 @@ export function initGame(depth, heuristic, errorRate, style, opponentId, opponen
     spawnWorker();
     
     currentPlayer = BLACK; // Human (Black) always starts
-    isAiTurn = false;      
+    isAiTurn = false;
+    isInputDisabled = false;    
     
     if (statusEl) {
         statusEl.textContent = i18n.t('status_player_turn');
@@ -157,7 +164,7 @@ function updateVisuals(r, c) {
 
 
 function handlePlayerClick(row, col) {
-    if (isAiTurn) return; // State Machine: Ignore clicks while AI is processing
+    if (isInputDisabled || isAiTurn) return; // State Machine: Ignore clicks while AI is processing
     
     const flips = getFlips(board, row, col, currentPlayer);
     if (flips.length > 0) {
@@ -170,7 +177,7 @@ function handlePlayerClick(row, col) {
 }
 
 function executeMove(row, col, flips) {
-    isAiTurn = true; // Block inputs during move animation
+    isInputDisabled = true; // Block inputs during move animation
     board[row][col] = currentPlayer;
     updateVisuals(row, col);
 
@@ -192,10 +199,10 @@ function executeMove(row, col, flips) {
     // Flip animation sequence
     flips.forEach(([r, c], index) => {
         board[r][c] = currentPlayer;
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             const piece = pieceElements[r][c];
             piece.classList.add('flipped');
-            setTimeout(() => {
+            setTrackedTimeout(() => {
                 const turnSound = AudioManager.playSFX('turn');
                 if (turnSound) turnSound.rate(1.0 + (index * 0.05)); // Pitched turn sounds
 
@@ -210,7 +217,7 @@ function executeMove(row, col, flips) {
     // Ensure turn doesn't switch until animations complete
     const rawAnimationTime = (flips.length * 100) + 150;
     const animationTime = Math.max(rawAnimationTime, 500); 
-    setTimeout(() => switchTurn(), animationTime);
+    setTrackedTimeout(() => switchTurn(), animationTime);
 }
 
 async function switchTurn() {
@@ -231,7 +238,7 @@ async function switchTurn() {
             console.table(currentAiHeuristic);
 
             // Promise setup for "Game Feel": Minimum 500ms delay to simulate thought
-            const minimumTimePromise = new Promise(resolve => setTimeout(resolve, 500));
+            const minimumTimePromise = new Promise(resolve => setTrackedTimeout(resolve, 500));
             
             const aiCalculationPromise = new Promise(resolve => {
                 aiWorker.onmessage = (e) => resolve(e.data);
@@ -240,7 +247,8 @@ async function switchTurn() {
                     player: WHITE, 
                     depth: currentAiDepth, 
                     heuristic: currentAiHeuristic, 
-                    errorRate: currentAiErrorRate, 
+                    errorRate: currentAiErrorRate,
+                    patience: currentAiPatience,
                     style: currentAiStyle
                 }); 
             });
@@ -264,6 +272,7 @@ async function switchTurn() {
             statusEl.classList.remove('thinking');
             setEmotion('idle'); 
             isAiTurn = false; 
+            isInputDisabled = false;
             showValidMoves();
         }
         return;
@@ -278,7 +287,7 @@ async function switchTurn() {
         
         setEmotion(currentPlayer === BLACK ? 'bad-player-move' : 'good-player-move');
         
-        setTimeout(() => {
+        setTrackedTimeout(() => {
             statusEl.classList.remove('alert-skip'); 
             switchTurn();
         }, 2000);
@@ -417,8 +426,10 @@ btnExit.onclick = () => {
 };
 
 btnRestart.onclick = () => {
+    isAiTurn = false;
     AudioManager.playSFX('click');
-    initGame(currentAiDepth, currentAiHeuristic, currentAiErrorRate, currentAiStyle, currentOpponentId, currentOpponentName, onGameExit);
+    clearAllTasks();
+    initGame(currentAiDepth, currentAiHeuristic, currentAiErrorRate, currentAiStyle, currentOpponentId, currentOpponentName, currentAiPatience, onGameExit);
 };
 
 let isAudioOn = !AudioManager.getMuteState(); 
@@ -498,4 +509,25 @@ function stopAllEffects() {
         const context = canvasEl.getContext('2d');
         if (context) context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     }
+}
+
+/**
+ * Registers and executes a tracked timeout.
+ * Ensures all pending UI tasks can be cleared on game reset.
+ */
+function setTrackedTimeout(callback, delay) {
+    const id = setTimeout(() => {
+        activeTimeouts.delete(id);
+        callback();
+    }, delay);
+    activeTimeouts.add(id);
+    return id;
+}
+
+/**
+ * Aborts all scheduled UI animations and logic tasks.
+ */
+function clearAllTasks() {
+    activeTimeouts.forEach(id => clearTimeout(id));
+    activeTimeouts.clear();
 }

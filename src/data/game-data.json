@@ -1,4 +1,4 @@
-{
+﻿{
   "difficulties": {
     "1": {
       "name": "diff_beginner",
@@ -136,6 +136,7 @@
       "portrait": "img/giovanna-face.webp",
       "difficultyLevel": 1,
       "playStyle": "positional",
+      "patience": 5,
       "assets": [
         "img/giovanna-idle.webp",
         "img/giovanna-thinking.webp",
@@ -153,6 +154,7 @@
       "portrait": "img/ethan-face.webp",
       "difficultyLevel": 1,
       "playStyle": "greedy",
+      "patience": 6,
       "assets": [
         "img/ethan-idle.webp",
         "img/ethan-thinking.webp",
@@ -170,6 +172,7 @@
       "portrait": "img/francisco-face.webp",
       "difficultyLevel": 2,
       "playStyle": "greedy",
+      "patience": 7,
       "assets": [
         "img/francisco-idle.webp",
         "img/francisco-thinking.webp",
@@ -182,11 +185,30 @@
       ]
     },
     {
+      "id": "li",
+      "name": "Li",
+      "portrait": "img/li-face.webp",
+      "difficultyLevel": 2,
+      "playStyle": "dynamic",
+      "patience": 8,
+      "assets": [
+        "img/li-idle.webp",
+        "img/li-thinking.webp",
+        "img/li-throw.webp",
+        "img/li-bad-player-move.webp",
+        "img/li-good-player-move.webp",
+        "img/li-lost-corner.webp",
+        "img/li-lost.webp",
+        "img/li-won.webp"
+      ]
+    },	
+    {
       "id": "madison",
       "name": "Madison",
       "portrait": "img/madison-face.webp",
       "difficultyLevel": 3,
       "playStyle": "evasive",
+      "patience": 9,
       "assets": [
         "img/madison-idle.webp",
         "img/madison-thinking.webp",
@@ -198,12 +220,31 @@
         "img/madison-won.webp"
       ]
     },
+   {
+      "id": "sergei",
+      "name": "Sergei",
+      "portrait": "img/sergei-face.webp",
+      "difficultyLevel": 3,
+      "playStyle": "frontier",
+      "patience": 10,
+      "assets": [
+        "img/sergei-idle.webp",
+        "img/sergei-thinking.webp",
+        "img/sergei-throw.webp",
+        "img/sergei-bad-player-move.webp",
+        "img/sergei-good-player-move.webp",
+        "img/sergei-lost-corner.webp",
+        "img/sergei-lost.webp",
+        "img/sergei-won.webp"
+      ]
+    },	
     {
       "id": "francois",
       "name": "Francois",
       "portrait": "img/francois-face.webp",
       "difficultyLevel": 4,
       "playStyle": "frontier",
+      "patience": 11,
       "assets": [
         "img/francois-idle.webp",
         "img/francois-thinking.webp",
@@ -221,6 +262,7 @@
       "portrait": "img/youngho-face.webp",
       "difficultyLevel": 4,
       "playStyle": "evasive",
+      "patience": 12,
       "assets": [
         "img/youngho-idle.webp",
         "img/youngho-thinking.webp",
@@ -234,10 +276,11 @@
     },	
 	{
       "id": "sofia",
-      "name": "Sof&iacute;a",
+      "name": "Sofia",
       "portrait": "img/sofia-face.webp",
       "difficultyLevel": 5,
       "playStyle": "positional",
+      "patience": 13,
       "assets": [
         "img/sofia-idle.webp",
         "img/sofia-thinking.webp",
@@ -255,6 +298,7 @@
       "portrait": "img/emma-face.webp",
       "difficultyLevel": 5,
       "playStyle": "strategic",
+      "patience": 14,
       "assets": [
         "img/emma-idle.webp",
         "img/emma-thinking.webp",
@@ -272,6 +316,7 @@
       "portrait": "img/shinbi-face.webp",
       "difficultyLevel": 6,
       "playStyle": "frontier",
+      "patience": 15,
       "assets": [
         "img/shinbi-idle.webp",
         "img/shinbi-thinking.webp",
@@ -289,6 +334,7 @@
       "portrait": "img/yui-face.webp",
       "difficultyLevel": 6,
       "playStyle": "mobility",
+      "patience": 16,
       "assets": [
         "img/yui-idle.webp",
         "img/yui-thinking.webp",
@@ -306,6 +352,7 @@
       "portrait": "img/elizabeth-face.webp",
       "difficultyLevel": 7,
       "playStyle": "evasive",
+      "patience": 17,
       "assets": [
         "img/elizabeth-idle.webp",
         "img/elizabeth-thinking.webp",
@@ -323,6 +370,7 @@
       "portrait": "img/aaryan-face.webp",
       "difficultyLevel": 7,
       "playStyle": "strategic",
+      "patience": 18,
       "assets": [
         "img/aaryan-idle.webp",
         "img/aaryan-thinking.webp",
@@ -340,6 +388,7 @@
       "portrait": "img/chon-face.webp",
       "difficultyLevel": 8,
       "playStyle": "positional",
+      "patience": 19,
       "assets": [
         "img/chon-idle.webp",
         "img/chon-thinking.webp",
@@ -357,6 +406,7 @@
       "portrait": "img/aoyama-face.webp",
       "difficultyLevel": 8,
       "playStyle": "dynamic",
+      "patience": null,
       "assets": [
         "img/aoyama-idle.webp",
         "img/aoyama-thinking.webp",

@@ -12,9 +12,10 @@ const pkg = require('./package.json');
 const now = new Date();
 const buildNumber = `${now.getFullYear().toString().slice(-2)}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}`;
 const fullVersion = `${pkg.version}.${buildNumber}`;
+const isProduction = process.argv.includes('production') || process.env.NODE_ENV === 'production';
 
 module.exports = {
-    mode: 'production',
+    mode: isProduction ? 'production' : 'development',
     entry: './src/js/index.js',
     output: {
         filename: 'js/[name].[contenthash].js',
@@ -64,12 +65,12 @@ module.exports = {
         ],
     },
     optimization: {
-        minimize: true,
+        minimize: isProduction,
         minimizer: [
             new TerserPlugin({
                 terserOptions: {
                     compress: {
-                        drop_console: true, // Borra los console.log en producción
+                        drop_console: isProduction, // Borra los console.log en producción
                     },
                 },
             }),
