@@ -125,7 +125,7 @@ function evaluateBoard(board, player, overrideStyle = null) {
         const mobilityScore = 10 * (getAllValidMoves(board, player).length - getAllValidMoves(board, opponent).length);
         const positionalScore = evaluateBoard(board, player, "positional");
         
-        // 50% Movilidad, 50% Posición
+        // 50% Mobility, 50% Position
         return (0.5 * mobilityScore) + (0.5 * positionalScore);
     }
 

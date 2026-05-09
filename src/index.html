@@ -23,7 +23,7 @@
     <!-- Webpack will inject CSS here automatically if configured correctly, 
          but keeping this reference is safe for dev -->
   </head>
-  <body>
+  <body style="background-color:#000;margin:0;">
     <!-- DONATION RIBBON -->
     <div id="donation-corner" class="donation-ribbon" style="display: none">
       <a href="https://www.paypal.com/donate/?hosted_button_id=DKX4NRA378Y4W" target="_blank" rel="noopener noreferrer" id="donation-link">
@@ -37,13 +37,18 @@
     </div>
     <!-- BOOT SCREEN -->
     <div id="screen-boot" class="game-screen">
+      <img src="img/raptware.webp"       id="logo-raptware"  class="logo" alt="Raptware"   style="opacity:0;" />
+      <img src="img/animondos-logo.webp" id="logo-animondos" class="logo" alt="Animondos" style="opacity:0;" />
+
       <button id="btn-boot" class="boot-btn loading">
         <span class="icon-spinner"></span>
       </button>
-    </div>
 
-    <!-- LOGO/PRELOADER SCREEN -->
-    <div id="screen-logo" class="game-screen" style="display: none"></div>
+      <div class="loading-container" id="boot-loading">
+        <div class="progress-bar" id="boot-progress"></div>
+        <span class="loading-text" id="boot-loading-text">LOADING...</span>
+      </div>
+    </div>
 
     <!-- SPLASH SCREEN -->
     <div id="screen-splash" class="game-screen" style="display: none">

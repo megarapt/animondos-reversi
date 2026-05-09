@@ -7,7 +7,6 @@ import { AudioManager } from './audio-manager.js';
  */
 const GAME_STATES = {
     BOOT: 'BOOT',
-    LOGO: 'LOGO',
     SPLASH: 'SPLASH',
     MAINMENU: 'MAINMENU',
     CHARACTER_PRELOADER: 'CHARACTER_PRELOADER',
@@ -79,31 +78,31 @@ const gameScreens = document.querySelectorAll('.game-screen');
  * ResizeObserver to handle dynamic scaling and aspect ratio detection
  */
 const resizer = new ResizeObserver(entries => {
-    entries.forEach(entry => {
-        const screen = entry.target;
-        const isVisible = window.getComputedStyle(screen).display !== 'none';
+    window.requestAnimationFrame(() => {
+        entries.forEach(entry => {
+            const screen = entry.target;
+            const isVisible = window.getComputedStyle(screen).display !== 'none';
 
-        if (isVisible) {
-            const { width, height } = entry.contentRect;
-            const ratio = width / height;
-            
-            // Inject CSS variables for dynamic styling in child components
-            document.documentElement.style.setProperty('--current-ratio', ratio);
-            document.documentElement.style.setProperty('--game-scale', width >= 500 ? 1 : width / 500);
+            if (isVisible) {
+                const { width, height } = entry.contentRect;
+                const ratio = width / height;
 
-            screen.classList.remove('ratio-x-large', 'ratio-large', 'ratio-small', 'ratio-wide');
+                document.documentElement.style.setProperty('--current-ratio', ratio);
+                document.documentElement.style.setProperty('--game-scale', width >= 500 ? 1 : width / 500);
 
-            // Categorize aspect ratio for layout adjustments
-            if (ratio <= 0.35) {
-                screen.classList.add('ratio-x-large');
-            } else if (ratio <= 0.43) {
-                screen.classList.add('ratio-large'); 
-            } else if (ratio >= 0.58 && ratio <= 0.8) {
-                screen.classList.add('ratio-small'); 
-            } else if (ratio > 0.8) {
-                screen.classList.add('ratio-wide'); 
+                screen.classList.remove('ratio-x-large', 'ratio-large', 'ratio-small', 'ratio-wide');
+
+                if (ratio <= 0.35) {
+                    screen.classList.add('ratio-x-large');
+                } else if (ratio <= 0.43) {
+                    screen.classList.add('ratio-large');
+                } else if (ratio >= 0.58 && ratio <= 0.8) {
+                    screen.classList.add('ratio-small');
+                } else if (ratio > 0.8) {
+                    screen.classList.add('ratio-wide');
+                }
             }
-        }
+        });
     });
 });
 
@@ -168,12 +167,6 @@ export const GameManager = {
             case GAME_STATES.BOOT:
                 document.getElementById('screen-boot').style.display = 'flex';
                 this.runBootFlow();
-                break;
-
-            case GAME_STATES.LOGO:
-                document.getElementById('screen-logo').style.display = 'flex';
-                AudioManager.playSFX('raptware');
-                this.runStaticPreloader();
                 break;
 
             case GAME_STATES.SPLASH:
@@ -285,161 +278,114 @@ export const GameManager = {
     },
 
     /**
-     * Handles initial core asset loading (i18n, logos, and critical SFX)
+     * Loads all game assets while showing logos on the boot screen.
+     * Play button appears only when everything is ready — zero wait after click.
      */
     runBootFlow: async function() {
-        const btn = document.getElementById('btn-boot');
-        
-        const loadI18n = i18n.init();
+        const btn          = document.getElementById('btn-boot');
+        const progressBar  = document.getElementById('boot-progress');
+        const loadingText  = document.getElementById('boot-loading-text');
+        const logoRaptware = document.getElementById('logo-raptware');
+        const logoAnimondos= document.getElementById('logo-animondos');
 
-        // Preload core branding assets
-        const logosToLoad = ['img/raptware.webp', 'img/animondos-logo.webp'];
-        const loadLogos = logosToLoad.map(src => {
-            return new Promise(resolve => {
-                const img = new Image();
-                img.src = src;
-                img.onload = resolve;
-                img.onerror = resolve; // Continue even if branding fails
-            });
-        });
-
-        const audioPromise = AudioManager.preload([
-            { name: 'raptware', path: 'audio/raptware.m4a', type: 'sfx' }
+        // Phase 1: i18n + raptware.m4a isolated — ensures instant playback on play click
+        await Promise.all([
+            i18n.init(),
+            AudioManager.preload([{ name: 'raptware', path: 'audio/raptware.m4a', type: 'sfx' }])
         ]);
+        if (loadingText) loadingText.textContent = i18n.t('loading');
 
-        // Wait for all critical boot assets in parallel
-        await Promise.all([loadI18n, audioPromise, ...loadLogos]);
+        // Clear inline style so CSS class takes over the transition
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+            if (logoRaptware)  { logoRaptware.style.opacity  = ''; logoRaptware.classList.add('visible');  }
+            if (logoAnimondos) { logoAnimondos.style.opacity = ''; logoAnimondos.classList.add('visible'); }
+        }));
 
-        // UI transition to ready state
-        btn.classList.remove('loading');
-        btn.classList.add('ready');
-        btn.innerHTML = '<span class="icon-play"></span>'; 
-
-        btn.onclick = () => {
-            this.changeState(GAME_STATES.LOGO);
-            toggleFullScreen();
-        };
-    },
-
-    /**
-     * Preloads all generic game assets (BGM, common SFX, UI images)
-     */
-    runStaticPreloader: async function() {
-        const logoScreen = document.getElementById('screen-logo');
-        logoScreen.style.display = 'flex';
-
-        const raptwareLogo = new Image();
-        raptwareLogo.src = 'img/raptware.webp';
-        raptwareLogo.className = 'logo';
-
-        const animondosLogo = new Image();
-        animondosLogo.src = 'img/animondos-logo.webp';
-        animondosLogo.className = 'logo';
-
-        logoScreen.appendChild(raptwareLogo);
-        logoScreen.appendChild(animondosLogo);
-
-        const loadingContainer = document.createElement('div');
-        loadingContainer.className = 'loading-container';
-
-        const progressBar = document.createElement('div');
-        progressBar.className = 'progress-bar';
-
-        const loadingText = document.createElement('span');
-        loadingText.className = 'loading-text';
-        loadingText.textContent = i18n.t('loading');
-
-        loadingContainer.appendChild(progressBar);
-        loadingContainer.appendChild(loadingText);
-        logoScreen.appendChild(loadingContainer);
-
-        setTimeout(() => {
-            raptwareLogo.style.opacity = '1';
-            animondosLogo.style.opacity = '1';
-        }, 50);
-
-        const minimumTimePromise = new Promise(resolve => {
-            setTimeout(resolve, 3000);
-        });
-
-        // 1. Fetch Game Configuration Data
+        // Phase 2: fetch game config + remaining assets with progress bar
         try {
             const response = await fetch('data/game-data.json');
-            if (!response.ok) throw new Error("HTTP error fetching JSON data");
+            if (!response.ok) throw new Error('HTTP error fetching game-data.json');
             const data = await response.json();
             AiDifficulties = data.difficulties;
             Opponents = data.opponents;
         } catch (error) {
-            console.error("Critical error loading game-data.json:", error);
+            console.error('Critical error loading game-data.json:', error);
         }
 
         const portraitsToLoad = Opponents.map(opp => opp.portrait).filter(Boolean);
 
-        // 2. Define audio manifest
+        // raptware already loaded in phase 1 — excluded from progress bar
         const gameSounds = [
-            { name: 'fanfare', path: 'audio/fanfare.m4a', type: 'sfx' },
-            { name: 'menu', path: 'audio/menu.m4a', type: 'bgm' },
-            { name: 'animondos_reversi', path: 'audio/animondos-reversi-theme.m4a', type: 'bgm' },
-            { name: 'victory', path: 'audio/victory-jingle.m4a', type: 'bgm' },
-            { name: 'defeat', path: 'audio/defeat-jingle.m4a', type: 'bgm' },
-            { name: 'invalid', path: 'audio/sfx-invalid-move.m4a', type: 'sfx' },
-            { name: 'place', path: 'audio/sfx-piece-place.m4a', type: 'sfx' },
-            { name: 'turn', path: 'audio/sfx-piece-turn.m4a', type: 'sfx' },
-            { name: 'click', path: 'audio/sfx-ui-click.m4a', type: 'sfx' },
-            { name: 'over', path: 'audio/sfx-ui-over.m4a', type: 'sfx' }
+            { name: 'fanfare',           path: 'audio/fanfare.m4a',                type: 'sfx' },
+            { name: 'menu',              path: 'audio/menu.m4a',                   type: 'bgm' },
+            { name: 'animondos_reversi', path: 'audio/animondos-reversi-theme.m4a',type: 'bgm' },
+            { name: 'victory',           path: 'audio/victory-jingle.m4a',         type: 'bgm' },
+            { name: 'defeat',            path: 'audio/defeat-jingle.m4a',          type: 'bgm' },
+            { name: 'invalid',           path: 'audio/sfx-invalid-move.m4a',       type: 'sfx' },
+            { name: 'place',             path: 'audio/sfx-piece-place.m4a',        type: 'sfx' },
+            { name: 'turn',              path: 'audio/sfx-piece-turn.m4a',         type: 'sfx' },
+            { name: 'click',             path: 'audio/sfx-ui-click.m4a',           type: 'sfx' },
+            { name: 'over',              path: 'audio/sfx-ui-over.m4a',            type: 'sfx' }
         ];
 
-        const allAssetsToLoad = [
+        const allImagesToLoad = [
             'img/background.webp',
             'img/board-bg.webp',
             'img/splash.webp',
             'img/reversi-logo.webp',
-            ...portraitsToLoad 
+            ...portraitsToLoad
         ];
 
-        let loadedCount = 0; 
-        const totalAssets = allAssetsToLoad.length + gameSounds.length;
+        let loadedCount = 0;
+        const totalAssets = allImagesToLoad.length + gameSounds.length;
 
         const onAssetLoaded = () => {
             loadedCount++;
-            const percentage = (loadedCount / totalAssets) * 100;
-            progressBar.style.width = `${percentage}%`; 
+            if (progressBar) progressBar.style.width = `${(loadedCount / totalAssets) * 100}%`;
         };
 
-        // 4. Preload Images
-        const imagePromises = allAssetsToLoad.map(src => {
-            return new Promise((resolve) => {
-                const img = new Image();
-                img.src = src;
-                img.onload = () => { onAssetLoaded(); resolve(); };
-                img.onerror = () => { onAssetLoaded(); resolve(); }; 
-            });
-        });
+        const imagePromises = allImagesToLoad.map(src => new Promise(resolve => {
+            const img = new Image();
+            img.src = src;
+            img.onload  = () => { onAssetLoaded(); resolve(); };
+            img.onerror = () => { onAssetLoaded(); resolve(); };
+        }));
 
-        // 5. Preload Audio (Integrated with Howler Provider)
-        const audioPromises = gameSounds.map(soundFile => {
-            return AudioManager.loadSingle(soundFile).then(() => {
-                onAssetLoaded(); 
-            });
-        });
+        const audioPromises = gameSounds.map(f =>
+            AudioManager.loadSingle(f).then(onAssetLoaded)
+        );
 
-        // 6. Finalize Preloader
-        const allAssetsLoadedPromise = Promise.all([...imagePromises, ...audioPromises]).then(() => {
-            loadingContainer.style.transition = 'opacity 0.5s ease-out';
-            loadingContainer.style.opacity = '0';
-        });
+        // Minimum visible time so logos don't flash for < 1s on fast connections
+        const minimumTimePromise = new Promise(resolve => setTimeout(resolve, 2000));
 
-        await Promise.all([minimumTimePromise, allAssetsLoadedPromise]);
+        await Promise.all([minimumTimePromise, ...imagePromises, ...audioPromises]);
 
-        console.log(`Logos displayed and ${totalAssets} total assets loaded.`);
-        
-        raptwareLogo.style.opacity = '0';
-        animondosLogo.style.opacity = '0';
-        
-        setTimeout(() => {
-            this.changeState(GAME_STATES.SPLASH);
-            logoScreen.remove(); 
-        }, 500); 
+        // All ready — reveal play button
+        const bootLoading = document.getElementById('boot-loading');
+        if (bootLoading) {
+            bootLoading.style.transition = 'opacity 0.4s ease-out';
+            bootLoading.style.opacity = '0';
+        }
+
+        btn.classList.remove('loading');
+        btn.classList.add('ready');
+        btn.innerHTML = '<span class="icon-play"></span>';
+
+        btn.onclick = () => {
+            btn.onclick = null; // prevent double-fire
+            btn.style.transition = 'opacity 0.3s ease-out';
+            btn.style.opacity = '0';
+            AudioManager.playSFX('raptware');
+            toggleFullScreen();
+
+            // Logo fade-out: starts at 0.7s, lasts 0.7s — completes right as screen changes
+            setTimeout(() => {
+                if (logoRaptware)  logoRaptware.classList.add('leaving');
+                if (logoAnimondos) logoAnimondos.classList.add('leaving');
+            }, 700);
+
+            setTimeout(() => this.changeState(GAME_STATES.SPLASH), 1400);
+        };
     },
 
     /**

@@ -1,6 +1,6 @@
 {
   "name": "animondos-reversi",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "High-performance PWA Reversi engine with offline-first architecture, Web Worker AI, and automated asset optimization. Celebrating 15 years of Animondos and 23 years of Raptware.",
   "main": "src/js/index.js",
   "scripts": {

@@ -70,7 +70,7 @@ module.exports = {
             new TerserPlugin({
                 terserOptions: {
                     compress: {
-                        drop_console: isProduction, // Borra los console.log en producción
+                        drop_console: isProduction, // Strips console.log in production builds
                     },
                 },
             }),
@@ -105,6 +105,11 @@ module.exports = {
                 ],
             }),
         ],
+    },
+    devServer: {
+        hot: false,
+        liveReload: false,
+        watchFiles: [],
     },
     plugins: [
         new webpack.DefinePlugin({

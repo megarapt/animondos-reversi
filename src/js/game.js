@@ -505,7 +505,7 @@ function stopAllEffects() {
     isConfettiActive = false;
     const canvasEl = document.getElementById('confetti-canvas');
     if (canvasEl) {
-        // Limpiamos el canvas físicamente
+        // Clear the canvas buffer
         const context = canvasEl.getContext('2d');
         if (context) context.clearRect(0, 0, canvasEl.width, canvasEl.height);
     }

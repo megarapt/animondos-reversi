@@ -48,7 +48,9 @@ body {
 /* === BOOT SCREEN STYLES === */
 #screen-boot {
     background-color: #000;
-    justify-content: center; 
+    justify-content: center;
+    gap: calc(40px * var(--game-scale));
+    padding-bottom: calc(40px * var(--game-scale));
 }
 
 .boot-btn {
@@ -397,7 +399,7 @@ body {
 }
 
 .ratio-wide .char-name {
-    font-size: calc(14px * var(--game-scale)); /* Un poco más pequeño para evitar saltos de línea */
+    font-size: calc(14px * var(--game-scale)); /* Slightly smaller to avoid line breaks */
     margin-bottom: calc(2px * var(--game-scale));
 }
 
@@ -496,6 +498,12 @@ body {
 .logo.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.logo.leaving {
+  opacity: 0;
+  transform: translateY(calc(-8px * var(--game-scale)));
+  transition: opacity 0.7s ease-in, transform 0.7s ease-in;
 }
 
 .loading-container {
@@ -739,8 +747,8 @@ body {
 }
 
 .ratio-wide #score-counter {
-    top: 0px; /* Separación del techo */
-    right: 0px; /* Separación de la pared derecha */
+    top: 0px;
+    right: 0px;
     width: calc(100px * var(--game-scale));
     height: calc(55px * var(--game-scale));
     font-size: calc(10px * var(--game-scale));
@@ -997,7 +1005,7 @@ body {
     transition: all 0.3s ease;
 }
 
-/* El triángulo de la esquina */
+/* Corner triangle */
 .ribbon-triangle {
     position: absolute;
     top: 0;
@@ -1010,7 +1018,7 @@ body {
     transition: border-color 0.3s ease;
 }
 
-/* El texto "Dona" dentro del triángulo */
+/* "Donate" label inside the triangle */
 .ribbon-text-short {
     position: absolute;
     top: calc(-52px * var(--game-scale, 1));
@@ -1044,5 +1052,5 @@ body {
 }
 
 .donation-ribbon:hover .ribbon-triangle {
-    border-top-color: #e68a00; /* Un tono más oscuro al tocar */
+    border-top-color: #e68a00; /* Slightly darker on hover */
 }
